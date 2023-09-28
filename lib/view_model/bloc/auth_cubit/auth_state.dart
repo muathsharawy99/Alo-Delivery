@@ -17,6 +17,9 @@ class SetVehicleState extends AuthState {}
 class ClearImageState extends AuthState {}
 
 
+class ClearControllerState extends AuthState {}
+
+
 
 class GetFromGalleryLoadingState extends AuthState {}
 class GetFromGallerySuccessState extends AuthState {}
@@ -48,6 +51,23 @@ class LoginUserSuccessState extends AuthState {}
 class LoginUserPendingState extends AuthState {}
 class LoginUserRejectedState extends AuthState {}
 class LoginUserErrorState extends AuthState {}
+
+
+
+class LoginDeliveryLoadingState extends AuthState {}
+class LoginDeliverySuccessState extends AuthState {}
+class LoginDeliveryPendingState extends AuthState {}
+class LoginDeliveryRejectedState extends AuthState {}
+class LoginDeliveryErrorState extends AuthState {}
+
+
+
+
+class LoginMerchantLoadingState extends AuthState {}
+class LoginMerchantSuccessState extends AuthState {}
+class LoginMerchantPendingState extends AuthState {}
+class LoginMerchantRejectedState extends AuthState {}
+class LoginMerchantErrorState extends AuthState {}
 
 
 

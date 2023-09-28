@@ -15,7 +15,7 @@ class EndPoints{
 
 
   static String clientCreateOrder = "client/order/store";
-  // static String adminAddDoctor = "adduser";
+  static String clientGetAllOffers = "client/offers/get_all_offer";
   // static String adminUpdateDoctor = "updateuser";
   // static String adminDeleteDoctor = "deleteuser";
   //

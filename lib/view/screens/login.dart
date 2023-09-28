@@ -37,15 +37,31 @@ class LoginScreen extends StatelessWidget {
               type: ConstKeys.client,
             ),
           );
-        }
-        else if (state is LoginUserPendingState) {
+        } else if (state is LoginDeliverySuccessState) {
+          Navigation.goPushAndReplacement(
+            context,
+            HomeScreen(
+              type: ConstKeys.delivery,
+            ),
+          );
+        } else if (state is LoginMerchantSuccessState) {
+          Navigation.goPushAndReplacement(
+            context,
+            HomeScreen(
+              type: ConstKeys.merchant,
+            ),
+          );
+        } else if (state is LoginUserPendingState ||
+            state is LoginDeliveryPendingState ||
+            state is LoginMerchantPendingState) {
           showMyDialog(
             titleString: "عفوا",
             context: context,
             text: ConstKeys.pending,
           );
-        }
-        else if (state is LoginUserRejectedState) {
+        } else if (state is LoginUserRejectedState ||
+            state is LoginDeliveryRejectedState ||
+            state is LoginMerchantRejectedState) {
           showMyDialog(
             titleString: "عفوا",
             context: context,
@@ -108,6 +124,9 @@ class LoginScreen extends StatelessWidget {
                             if (v!.isEmpty) {
                               return "برجاء ملئ خانة الرقم القومي";
                             }
+
+                            ///TODO : Validator
+
                             // else if (v.length < 14) {
                             //   return "برجاء كتابة الرقم القومي بشكل صحيح";
                             // }

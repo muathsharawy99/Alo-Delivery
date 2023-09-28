@@ -116,6 +116,50 @@ class ClientCubit extends Cubit<ClientState> {
 
 
 
+///TODO : By Time
+  getAllOffers() async {
+    emit(GetAllOffersLoadingState());
+    DioHelper.get(
+      endPoint: EndPoints.clientGetAllOffers,
+      token: await SecureStorage.getData(SecureKeys.token),
+    ).then(
+      (value) {
+        if (value.data['status'] == 200 || value.data['status'] == 201) {
+          print("Success On .Then In Client Store New Delivery");
+
+          showToast(
+            msg: value.data['message'],
+            isError: false,
+          );
+          emit(GetAllOffersSuccessState());
+        } else {
+          print("Fail On .Then In Client Store New Delivery");
+          emit(GetAllOffersErrorState());
+          throw 'Error On .Then In Client Store New Delivery';
+        }
+      },
+    ).catchError((error) {
+      print("Error On .CatchError In Client Store New Delivery");
+      print(error.toString());
+      if (error is DioException && error.response?.statusCode == 401) {
+        final data = error.response?.data;
+
+        final message = data['message'];
+        print(message);
+
+        // final errors = error.response?.data['error'];
+        // showToast(
+        //   msg: "${errors['national_id'][0]}&${errors['phone'][0]}",
+        //   isError: true,
+        // );
+        emit(GetAllOffersErrorState());
+      }
+    });
+  }
+
+
+
+
 
 
 

@@ -21,3 +21,9 @@ class UserCreateOrderErrorState extends ClientState {}
 class GetVehiclesLoadingState extends ClientState {}
 class GetVehiclesSuccessState extends ClientState {}
 class GetVehiclesErrorState extends ClientState {}
+
+
+
+class GetAllOffersLoadingState extends ClientState {}
+class GetAllOffersSuccessState extends ClientState {}
+class GetAllOffersErrorState extends ClientState {}

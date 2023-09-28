@@ -85,6 +85,7 @@ class AuthCubit extends Cubit<AuthState> {
     emailController.clear();
     passwordController.clear();
     vPasswordController.clear();
+    emit(ClearControllerState());
   }
 
   getFromGallery(String type) async {
@@ -161,7 +162,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  ///TODO : Photo
+  ///TODO : Photos
   createDelivery() async {
     emit(CreateDeliveryLoadingState());
     DioHelper.postWithImage(
@@ -261,6 +262,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
+
   loginClient() {
     emit(LoginUserLoadingState());
     DioHelper.post(
@@ -308,6 +310,103 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
+  ///TODO : Test
+  loginDelivery() {
+    emit(LoginDeliveryLoadingState());
+    DioHelper.post(
+      endPoint: EndPoints.login,
+      data: {
+        "national_id": nIDController.text,
+        "password": passwordController.text,
+      },
+    ).then(
+          (value) async {
+        if (value.data['status'] == 200 || value.data['status'] == 201) {
+          print("Success On .Then In Delivery Login");
+          if (value.data['message'] == ConstKeys.pending) {
+            emit(LoginDeliveryPendingState());
+          } else if (value.data['message'] == ConstKeys.rejected) {
+            emit(LoginDeliveryRejectedState());
+          } else if (value.data['message'] == ConstKeys.accepted) {
+            showToast(
+              msg: value.data['message'],
+              isError: false,
+            );
+            SecureStorage.setData(
+              SecureKeys.token,
+              value.data['data']['token'],
+            );
+            emit(LoginDeliverySuccessState());
+          }
+        } else {
+          print("Fail On .Then In Delivery Login");
+          emit(LoginDeliveryErrorState());
+          throw 'Error On .Then In Delivery Login';
+        }
+      },
+    ).catchError((error) {
+      print("Error On .CatchError In Delivery Login");
+      print(error.toString());
+      if (error is DioException && error.response?.statusCode == 422) {
+        final response = error.response?.data;
+        showToast(
+          msg: "${response['message']}",
+          isError: true,
+        );
+        emit(LoginDeliveryErrorState());
+      }
+    });
+  }
+
+  ///TODO : Test
+  loginMerchant() {
+    emit(LoginMerchantLoadingState());
+    DioHelper.post(
+      endPoint: EndPoints.login,
+      data: {
+        "national_id": nIDController.text,
+        "password": passwordController.text,
+      },
+    ).then(
+          (value) async {
+        if (value.data['status'] == 200 || value.data['status'] == 201) {
+          print("Success On .Then In Delivery Login");
+          if (value.data['message'] == ConstKeys.pending) {
+            emit(LoginMerchantPendingState());
+          } else if (value.data['message'] == ConstKeys.rejected) {
+            emit(LoginMerchantRejectedState());
+          } else if (value.data['message'] == ConstKeys.accepted) {
+            showToast(
+              msg: value.data['message'],
+              isError: false,
+            );
+            SecureStorage.setData(
+              SecureKeys.token,
+              value.data['data']['token'],
+            );
+            emit(LoginMerchantSuccessState());
+          }
+        } else {
+          print("Fail On .Then In Delivery Login");
+          emit(LoginMerchantErrorState());
+          throw 'Error On .Then In Delivery Login';
+        }
+      },
+    ).catchError((error) {
+      print("Error On .CatchError In Delivery Login");
+      print(error.toString());
+      if (error is DioException && error.response?.statusCode == 422) {
+        final response = error.response?.data;
+        showToast(
+          msg: "${response['message']}",
+          isError: true,
+        );
+        emit(LoginMerchantErrorState());
+      }
+    });
+  }
+
+
   getVehicles() {
     emit(GetVehiclesLoadingState());
     DioHelper.get(
@@ -334,4 +433,5 @@ class AuthCubit extends Cubit<AuthState> {
       emit(GetVehiclesErrorState());
     });
   }
+
 }
