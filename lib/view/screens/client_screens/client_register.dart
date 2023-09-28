@@ -25,7 +25,7 @@ class ClientRegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is CreateUserSuccessState) {
+        if (state is CreateClientSuccessState) {
           AuthCubit.get(context).clearController();
           Navigation.goPushAndReplacement(
             context,

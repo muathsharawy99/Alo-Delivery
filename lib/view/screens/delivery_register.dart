@@ -24,7 +24,17 @@ class DeliveryRegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is CreateDeliverySuccessState) {
+          AuthCubit.get(context).clearController();
+          Navigation.goPushAndReplacement(
+            context,
+            LoginScreen(
+              type: ConstKeys.delivery,
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         var cubit = AuthCubit.get(context);
         return Form(
@@ -598,12 +608,9 @@ class DeliveryRegisterScreen extends StatelessWidget {
                           }
                           if (cubit.registerFormKey.currentState!.validate() &&
                               cubit.isChecked) {
-                            print("Hiiiiiiii");
+
                             cubit.createDelivery();
-                            showToast(
-                              msg: "HI",
-                              isError: false,
-                            );
+
                           }
                         },
                         width: 331.w,

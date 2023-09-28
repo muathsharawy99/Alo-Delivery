@@ -2,9 +2,7 @@ import 'package:alo_delivery/view/components/my_customization_widget/custom_butt
 import 'package:alo_delivery/view/components/my_customization_widget/custom_svg.dart';
 import 'package:alo_delivery/view/components/my_customization_widget/custom_text.dart';
 import 'package:alo_delivery/view/components/my_customization_widget/custom_textField.dart';
-import 'package:alo_delivery/view/components/my_customization_widget/custom_toast.dart';
 import 'package:alo_delivery/view/screens/home.dart';
-import 'package:alo_delivery/view/screens/client_screens/client_register.dart';
 import 'package:alo_delivery/view_model/bloc/auth_cubit/auth_cubit.dart';
 import 'package:alo_delivery/view_model/bloc/auth_cubit/auth_state.dart';
 import 'package:alo_delivery/view_model/navigation/navigation.dart';
@@ -30,7 +28,8 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is LoginUserSuccessState) {
+        if (state is LoginClientSuccessState) {
+          AuthCubit.get(context).clearController();
           Navigation.goPushAndReplacement(
             context,
             HomeScreen(
@@ -38,6 +37,7 @@ class LoginScreen extends StatelessWidget {
             ),
           );
         } else if (state is LoginDeliverySuccessState) {
+          AuthCubit.get(context).clearController();
           Navigation.goPushAndReplacement(
             context,
             HomeScreen(
@@ -45,13 +45,14 @@ class LoginScreen extends StatelessWidget {
             ),
           );
         } else if (state is LoginMerchantSuccessState) {
+          AuthCubit.get(context).clearController();
           Navigation.goPushAndReplacement(
             context,
             HomeScreen(
               type: ConstKeys.merchant,
             ),
           );
-        } else if (state is LoginUserPendingState ||
+        } else if (state is LoginClientPendingState ||
             state is LoginDeliveryPendingState ||
             state is LoginMerchantPendingState) {
           showMyDialog(
@@ -59,7 +60,7 @@ class LoginScreen extends StatelessWidget {
             context: context,
             text: ConstKeys.pending,
           );
-        } else if (state is LoginUserRejectedState ||
+        } else if (state is LoginClientRejectedState ||
             state is LoginDeliveryRejectedState ||
             state is LoginMerchantRejectedState) {
           showMyDialog(

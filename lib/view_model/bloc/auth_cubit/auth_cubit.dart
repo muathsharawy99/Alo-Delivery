@@ -119,6 +119,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+
   void clearImages() {
     idImage = null;
     licenceImage = null;
@@ -126,8 +127,9 @@ class AuthCubit extends Cubit<AuthState> {
     emit(ClearImageState());
   }
 
+
   createClient() {
-    emit(CreateUserLoadingState());
+    emit(CreateClientLoadingState());
     DioHelper.post(
       endPoint: EndPoints.register,
       data: {
@@ -148,10 +150,11 @@ class AuthCubit extends Cubit<AuthState> {
             msg: value.data['message'],
             isError: false,
           );
-          emit(CreateUserSuccessState());
-        } else {
+          emit(CreateClientSuccessState());
+        }
+        else {
           print("Fail On .Then In Client Register");
-          emit(CreateUserErrorState());
+          emit(CreateClientErrorState());
           throw 'Error On .Then In Client Register';
         }
       },
@@ -164,7 +167,7 @@ class AuthCubit extends Cubit<AuthState> {
           msg: "${errors['national_id'][0]}&${errors['phone'][0]}",
           isError: true,
         );
-        emit(CreateUserErrorState());
+        emit(CreateClientErrorState());
       }
     });
   }
@@ -243,20 +246,20 @@ class AuthCubit extends Cubit<AuthState> {
     ).then(
       (value) {
         if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Client Register");
+          print("Success On .Then In Merchant Register");
           showToast(
             msg: value.data['message'],
             isError: false,
           );
           emit(CreateMerchantSuccessState());
         } else {
-          print("Fail On .Then In Client Register");
+          print("Fail On .Then In Merchant Register");
           emit(CreateMerchantErrorState());
-          throw 'Error On .Then In Client Register';
+          throw 'Error On .Then In Merchant Register';
         }
       },
     ).catchError((error) {
-      print("Error On .CatchError In Client Register");
+      print("Error On .CatchError In Merchant Register");
       print(error.toString());
       if (error is DioException && error.response?.statusCode == 422) {
         final errors = error.response?.data['error'];
@@ -271,7 +274,7 @@ class AuthCubit extends Cubit<AuthState> {
 
 
   loginClient() {
-    emit(LoginUserLoadingState());
+    emit(LoginClientLoadingState());
     DioHelper.post(
       endPoint: EndPoints.login,
       data: {
@@ -283,9 +286,9 @@ class AuthCubit extends Cubit<AuthState> {
         if (value.data['status'] == 200 || value.data['status'] == 201) {
           print("Success On .Then In Client Login");
           if (value.data['message'] == ConstKeys.pending) {
-            emit(LoginUserPendingState());
+            emit(LoginClientPendingState());
           } else if (value.data['message'] == ConstKeys.rejected) {
-            emit(LoginUserRejectedState());
+            emit(LoginClientRejectedState());
           } else if (value.data['message'] == ConstKeys.accepted) {
             showToast(
               msg: value.data['message'],
@@ -295,11 +298,11 @@ class AuthCubit extends Cubit<AuthState> {
               SecureKeys.token,
               value.data['data']['token'],
             );
-            emit(LoginUserSuccessState());
+            emit(LoginClientSuccessState());
           }
         } else {
           print("Fail On .Then In Client Login");
-          emit(LoginUserErrorState());
+          emit(LoginClientErrorState());
           throw 'Error On .Then In Client Login';
         }
       },
@@ -312,7 +315,7 @@ class AuthCubit extends Cubit<AuthState> {
           msg: "${response['message']}",
           isError: true,
         );
-        emit(LoginUserErrorState());
+        emit(LoginClientErrorState());
       }
     });
   }
@@ -377,7 +380,7 @@ class AuthCubit extends Cubit<AuthState> {
     ).then(
           (value) async {
         if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Delivery Login");
+          print("Success On .Then In Merchant Login");
           if (value.data['message'] == ConstKeys.pending) {
             emit(LoginMerchantPendingState());
           } else if (value.data['message'] == ConstKeys.rejected) {
@@ -394,13 +397,13 @@ class AuthCubit extends Cubit<AuthState> {
             emit(LoginMerchantSuccessState());
           }
         } else {
-          print("Fail On .Then In Delivery Login");
+          print("Fail On .Then In Merchant Login");
           emit(LoginMerchantErrorState());
-          throw 'Error On .Then In Delivery Login';
+          throw 'Error On .Then In Merchant Login';
         }
       },
     ).catchError((error) {
-      print("Error On .CatchError In Delivery Login");
+      print("Error On .CatchError In Merchant Login");
       print(error.toString());
       if (error is DioException && error.response?.statusCode == 422) {
         final response = error.response?.data;

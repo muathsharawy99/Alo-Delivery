@@ -27,9 +27,9 @@ class GetFromGalleryErrorState extends AuthState {}
 
 
 
-class CreateUserLoadingState extends AuthState {}
-class CreateUserSuccessState extends AuthState {}
-class CreateUserErrorState extends AuthState {}
+class CreateClientLoadingState extends AuthState {}
+class CreateClientSuccessState extends AuthState {}
+class CreateClientErrorState extends AuthState {}
 
 
 
@@ -46,11 +46,11 @@ class CreateMerchantErrorState extends AuthState {}
 
 
 
-class LoginUserLoadingState extends AuthState {}
-class LoginUserSuccessState extends AuthState {}
-class LoginUserPendingState extends AuthState {}
-class LoginUserRejectedState extends AuthState {}
-class LoginUserErrorState extends AuthState {}
+class LoginClientLoadingState extends AuthState {}
+class LoginClientSuccessState extends AuthState {}
+class LoginClientPendingState extends AuthState {}
+class LoginClientRejectedState extends AuthState {}
+class LoginClientErrorState extends AuthState {}
 
 
 
