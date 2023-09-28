@@ -51,30 +51,36 @@ class AuthCubit extends Cubit<AuthState> {
     emit(ShowRegisterPasswordState());
   }
 
+
   void showLoginPassword() {
     isLoginVisible = !isLoginVisible;
     emit(ShowLoginPasswordState());
   }
+
 
   void checkLicences() {
     isChecked = !isChecked;
     emit(CheckLicencesState());
   }
 
+
   void changeIndicatorIndex(int index) {
     currentIndex = index;
     emit(ChangeIndicatorIndexState());
   }
+
 
   void setGenderController(String value) {
     genderController.text = value;
     emit(SetGenderState());
   }
 
+
   void setVehicleController(int value) {
     vehicleController.text = value.toString();
     emit(SetVehicleState());
   }
+
 
   void clearController() {
     nameController.clear();
@@ -87,6 +93,7 @@ class AuthCubit extends Cubit<AuthState> {
     vPasswordController.clear();
     emit(ClearControllerState());
   }
+
 
   getFromGallery(String type) async {
     emit(GetFromGalleryLoadingState());
@@ -218,7 +225,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  ///TODO : Test
+
   createMerchant() {
     emit(CreateMerchantLoadingState());
     DioHelper.post(
@@ -310,7 +317,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  ///TODO : Test
+
   loginDelivery() {
     emit(LoginDeliveryLoadingState());
     DioHelper.post(
@@ -358,7 +365,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  ///TODO : Test
+
   loginMerchant() {
     emit(LoginMerchantLoadingState());
     DioHelper.post(

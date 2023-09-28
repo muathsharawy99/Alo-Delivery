@@ -63,6 +63,7 @@ class ClientCubit extends Cubit<ClientState> {
 
   }
 
+
   storeNewOrder() async {
     print(await SecureStorage.getData(SecureKeys.token));
     emit(UserCreateOrderLoadingState());
@@ -156,15 +157,6 @@ class ClientCubit extends Cubit<ClientState> {
       }
     });
   }
-
-
-
-
-
-
-
-
-
 
 
   getVehicles() {

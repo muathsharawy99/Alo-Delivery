@@ -17,7 +17,7 @@ class ClientFollowOrderScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomText(
-              text: "اختر الخدمة",
+              text: "متابعة طلب",
               fontSize: 25.sp,
               color: ColorAssets.darkPurple,
               fontWeight: FontWeight.bold,

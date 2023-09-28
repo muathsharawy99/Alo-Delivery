@@ -192,28 +192,12 @@ class LoginScreen extends StatelessWidget {
 
                               ///TODO : Delivery Home Screen
                               else if (type == ConstKeys.delivery) {
-                                showToast(
-                                  msg: "Hi Delivery",
-                                  isError: false,
-                                );
-                                Navigation.goPushAndReplacement(
-                                  context,
-                                  HomeScreen(type: ConstKeys.delivery),
-                                );
+                                cubit.loginDelivery();
                               }
 
                               ///TODO : Merchant Home Screen
                               else if (type == ConstKeys.merchant) {
-                                showToast(
-                                  msg: "Hi Merchant",
-                                  isError: false,
-                                );
-                                Navigation.goPushAndReplacement(
-                                  context,
-                                  HomeScreen(
-                                    type: ConstKeys.merchant,
-                                  ),
-                                );
+                                cubit.loginMerchant();
                               }
                             }
                           },

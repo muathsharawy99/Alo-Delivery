@@ -401,9 +401,9 @@ class MerchantRegisterScreen extends StatelessWidget {
                             } else if (cubit.registerFormKey.currentState!
                                     .validate() &&
                                 cubit.isChecked) {
-                              ///TODO : OnPressed
 
-                              // cubit.createClient();
+
+                              cubit.createMerchant();
                             }
                           },
                           width: 331.w,
