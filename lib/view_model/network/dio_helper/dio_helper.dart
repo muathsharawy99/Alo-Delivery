@@ -8,13 +8,12 @@ class DioHelper {
     dio = Dio(
       BaseOptions(
         baseUrl: EndPoints.baseUrl,
-
+        receiveDataWhenStatusError: true,
       ),
     );
   }
 
   static Future<Response> post({
-
     required String endPoint,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? data,
@@ -25,10 +24,8 @@ class DioHelper {
         'Authorization': 'Bearer $token',
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-
       };
       var response = await dio.post(
-
         endPoint,
         queryParameters: queryParameters,
         data: data,
@@ -39,7 +36,6 @@ class DioHelper {
       rethrow;
     }
   }
-
 
   static Future<Response> postWithImage({
     required String endPoint,
@@ -74,8 +70,8 @@ class DioHelper {
     try {
       dio.options.headers = {
         'Authorization': 'Bearer $token',
-        'Accept':'application/ecmascript',
-        'Content-Type':'application/json'
+        'Accept': 'application/ecmascript',
+        'Content-Type': 'application/json'
       };
       var response = await dio.get(
         endPoint,

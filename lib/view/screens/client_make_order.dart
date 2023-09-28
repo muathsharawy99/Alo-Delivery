@@ -22,7 +22,14 @@ class ClientMakeOrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ClientCubit, ClientState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is UserCreateOrderSuccessState) {
+          Navigation.goPush(
+            context,
+            ClientOrderResultScreen(),
+          );
+        }
+      },
       builder: (context, state) {
         var cubit = ClientCubit.get(context);
         return Scaffold(
@@ -197,16 +204,15 @@ class ClientMakeOrderScreen extends StatelessWidget {
                         items: cubit.allVehiclesModel?.data
                             ?.map(
                               (item) => DropdownMenuItem(
-                            value: item.id,
-                            child: CustomText(
-                              text: "${item.name}",
-                            ),
-                          ),
-                        )
+                                value: item.id,
+                                child: CustomText(
+                                  text: "${item.name}",
+                                ),
+                              ),
+                            )
                             .toList(),
                         decoration: InputDecoration(
                           filled: true,
-
                           fillColor: ColorAssets.textFieldFill,
                           label: const CustomText(
                             text: "نوع المركبة",
@@ -293,11 +299,6 @@ class ClientMakeOrderScreen extends StatelessWidget {
                         showToast(
                           msg: "HI",
                           isError: false,
-                        );
-
-                        Navigation.goPush(
-                          context,
-                          ClientOrderResultScreen(),
                         );
 
                         // }
