@@ -5,15 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FollowOrderContainer extends StatefulWidget {
-  const FollowOrderContainer({super.key});
+  const FollowOrderContainer({
+    super.key,
+    required this.orderDescription,
+  });
+
+  final String orderDescription;
 
   @override
-  State<FollowOrderContainer> createState() => _FollowOrderContainerState();
+  State<FollowOrderContainer> createState() => _FollowOrderContainerState(orderDescription:this.orderDescription );
 }
 
 bool visible = false;
 
 class _FollowOrderContainerState extends State<FollowOrderContainer> {
+
+  _FollowOrderContainerState({required this.orderDescription});
+  final String orderDescription;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -56,7 +65,7 @@ class _FollowOrderContainerState extends State<FollowOrderContainer> {
                       width: 35.w,
                     ),
                     CustomText(
-                      text: "الطلب الاول",
+                      text: orderDescription,
                       fontSize: 15.sp,
                       color: ColorAssets.darkPurple,
                     ),
@@ -149,7 +158,7 @@ class _FollowOrderContainerState extends State<FollowOrderContainer> {
                   width: 35.w,
                 ),
                 CustomText(
-                  text: "الطلب الاول",
+                  text: orderDescription,
                   fontSize: 15.sp,
                   color: ColorAssets.darkPurple,
                 ),

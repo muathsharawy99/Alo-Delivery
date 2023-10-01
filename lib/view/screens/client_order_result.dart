@@ -61,7 +61,27 @@ class ClientOrderResultScreen extends StatelessWidget {
                   SizedBox(
                     height: 10.h,
                   ),
-                  NormalDeliveryCard(),
+                  StreamBuilder(
+                    stream: cubit.getAllOffers(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        print("${snapshot.data}");
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) => NormalDeliveryCard(),
+                          separatorBuilder: (context, index) => SizedBox(
+                            height: 20.h,
+                          ),
+                          itemCount: 5,
+                        );
+
+                        //NormalDeliveryCard();
+                      } else {
+                        return Text("NO DATA");
+                      }
+                    },
+                  ),
                   SizedBox(
                     height: 50.h,
                   ),
@@ -72,7 +92,6 @@ class ClientOrderResultScreen extends StatelessWidget {
                     height: 10.h,
                   ),
                   CallingRedirectionCard(),
-
                   SizedBox(
                     height: 20.h,
                   ),
