@@ -19,6 +19,7 @@ class DeliveryReportScreen extends StatelessWidget {
         // var cubit = DeliveryCubit.get(context);
         return Scaffold(
           appBar: CustomAppBar(
+            showTitle: true,
             showProfile: false,
           ),
           body: Padding(

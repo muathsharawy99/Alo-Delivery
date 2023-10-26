@@ -1,44 +1,43 @@
-import 'package:alo_delivery/view/components/my_customization_widget/custom_button.dart';
-import 'package:alo_delivery/view/components/my_customization_widget/custom_text.dart';
-import 'package:alo_delivery/view/components/my_customization_widget/custom_textField.dart';
-import 'package:alo_delivery/view/components/my_customization_widget/custom_toast.dart';
-import 'package:alo_delivery/view/screens/client_order_result.dart';
-import 'package:alo_delivery/view_model/bloc/client_cubit/client_cubit.dart';
-import 'package:alo_delivery/view_model/bloc/client_cubit/client_state.dart';
-import 'package:alo_delivery/view_model/navigation/navigation.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../components/app_customs/app_bar/custom_appbar.dart';
-import '../components/app_customs/color_assets/color_assets.dart';
-import '../components/app_customs/image_container/image_container.dart';
+import '../../../view_model/bloc/merchant_cubit/merchant_cubit.dart';
+import '../../../view_model/bloc/merchant_cubit/merchant_state.dart';
+import '../../../view_model/navigation/navigation.dart';
+import '../../components/app_customs/app_bar/custom_appbar.dart';
+import '../../components/app_customs/color_assets/color_assets.dart';
+import '../../components/my_customization_widget/custom_button.dart';
+import '../../components/my_customization_widget/custom_text.dart';
+import '../../components/my_customization_widget/custom_textField.dart';
+import '../../components/my_customization_widget/custom_toast.dart';
+import 'merchant_order_result.dart';
 
-class ClientMakeOrderScreen extends StatelessWidget {
-  const ClientMakeOrderScreen({super.key});
+class MerchantMakeOrderScreen extends StatelessWidget {
+  const MerchantMakeOrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ClientCubit, ClientState>(
+    return BlocConsumer<MerchantCubit, MerchantState>(
       listener: (context, state) {
-        if (state is UserCreateOrderSuccessState) {
+        if (state is MerchantCreateOrderSuccessState) {
           Navigation.goPush(
             context,
-            ClientOrderResultScreen(),
+            MerchantOrderResultScreen(),
           );
         }
       },
       builder: (context, state) {
-        var cubit = ClientCubit.get(context);
+        var cubit = MerchantCubit.get(context);
         return Scaffold(
           resizeToAvoidBottomInset: true,
-          appBar: CustomAppBar(
+          appBar: const CustomAppBar(
+            showTitle: true,
             showProfile: false,
           ),
           body: Form(
-            key: cubit.newOrderFormKey,
+            key: cubit.merchantMakeOrderFormKey,
             child: Padding(
               padding: EdgeInsetsDirectional.all(
                 10.w,
@@ -57,11 +56,11 @@ class ClientMakeOrderScreen extends StatelessWidget {
                       width: double.infinity,
                     ),
                     CustomTextField(
-                      controller: cubit.fromController,
+                      controller: cubit.toController,
                       keyboardType: TextInputType.text,
                       radius: 8.r,
                       filled: true,
-                      label: "من",
+                      label: "الى عنوان",
                       maxLines: 2,
                       fillColor: ColorAssets.textFieldFill,
                       borderSideOnEnabled: BorderSide(
@@ -69,6 +68,10 @@ class ClientMakeOrderScreen extends StatelessWidget {
                         width: 2.w,
                       ),
                       borderSideOnFocus: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
+                      borderSideOnFocusedError: BorderSide(
                         color: ColorAssets.darkPurple,
                         width: 2.w,
                       ),
@@ -88,18 +91,21 @@ class ClientMakeOrderScreen extends StatelessWidget {
                       height: 20.h,
                     ),
                     CustomTextField(
-                      controller: cubit.toController,
-                      keyboardType: TextInputType.text,
+                      controller: cubit.nameController,
+                      keyboardType: TextInputType.name,
                       radius: 8.r,
                       filled: true,
-                      label: "الى",
-                      maxLines: 2,
+                      label: "الاسم",
                       fillColor: ColorAssets.textFieldFill,
                       borderSideOnEnabled: BorderSide(
                         color: ColorAssets.darkPurple,
                         width: 2.w,
                       ),
                       borderSideOnFocus: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
+                      borderSideOnFocusedError: BorderSide(
                         color: ColorAssets.darkPurple,
                         width: 2.w,
                       ),
@@ -148,51 +154,23 @@ class ClientMakeOrderScreen extends StatelessWidget {
                     SizedBox(
                       height: 20.h,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        ImageContainer(
-                          onTap: () {
-                            cubit.getFromGallery();
-                          },
-                        ),
-                        SizedBox(
-                          width: 20.w,
-                        ),
-                        ImageContainer(
-                          onTap: cubit.imageFile != null
-                              ? () {
-                                  showAdaptiveDialog(
-                                    context: context,
-                                    builder: (v) {
-                                      return CupertinoAlertDialog(
-                                        content: InteractiveViewer(
-                                          boundaryMargin: EdgeInsets.zero,
-                                          child: Image.file(
-                                            filterQuality: FilterQuality.high,
-                                            cubit.imageFile!,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    barrierDismissible: true,
-                                  );
-                                }
-                              : () {},
-                          child: cubit.imageFile != null
-                              ? Image.file(
-                                  cubit.imageFile!,
-                                  fit: BoxFit.cover,
-                                )
-                              : CustomText(
-                                  textAlign: TextAlign.center,
-                                  text: "معاينة الصورة",
-                                  fontSize: 14.sp,
-                                ),
-                        ),
-                      ],
+                    CustomTextField(
+                      controller: cubit.descriptionController,
+                      keyboardType: TextInputType.text,
+                      radius: 8.r,
+                      filled: true,
+                      label: "وصف الطلب",
+                      alignLabelWithHint: true,
+                      fillColor: ColorAssets.textFieldFill,
+                      maxLines: 3,
+                      borderSideOnEnabled: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
+                      borderSideOnFocus: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,
@@ -206,7 +184,7 @@ class ClientMakeOrderScreen extends StatelessWidget {
                               (item) => DropdownMenuItem(
                                 value: item.id,
                                 child: CustomText(
-                                  text: "${item.name}",
+                                  text: "${item.vehicle}",
                                 ),
                               ),
                             )
@@ -255,7 +233,6 @@ class ClientMakeOrderScreen extends StatelessWidget {
                           ),
                         ),
                         onChanged: (v) {
-                          print(v);
                           cubit.setVehicleController(v!);
                         },
                         validator: (v) {
@@ -271,14 +248,12 @@ class ClientMakeOrderScreen extends StatelessWidget {
                       height: 20.h,
                     ),
                     CustomTextField(
-                      controller: cubit.descriptionController,
-                      keyboardType: TextInputType.text,
+                      controller: cubit.priceController,
+                      keyboardType: TextInputType.number,
                       radius: 8.r,
                       filled: true,
-                      label: "وصف الطلب",
-                      alignLabelWithHint: true,
+                      label: "السعر",
                       fillColor: ColorAssets.textFieldFill,
-                      maxLines: 3,
                       borderSideOnEnabled: BorderSide(
                         color: ColorAssets.darkPurple,
                         width: 2.w,
@@ -287,14 +262,97 @@ class ClientMakeOrderScreen extends StatelessWidget {
                         color: ColorAssets.darkPurple,
                         width: 2.w,
                       ),
+                      borderSideOnFocusedError: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
+                      borderSideOnError: BorderSide(
+                        color: Colors.red,
+                        width: 2.w,
+                      ),
+                      validator: (v) {
+                        if (v!.isEmpty) {
+                          return "برجاء ملئ الخانة";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    CustomTextField(
+                      controller: cubit.shipPriceController,
+                      keyboardType: TextInputType.number,
+                      radius: 8.r,
+                      filled: true,
+                      label: "سعر الشحن",
+                      fillColor: ColorAssets.textFieldFill,
+                      borderSideOnEnabled: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
+                      borderSideOnFocus: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
+                      borderSideOnFocusedError: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
+                      borderSideOnError: BorderSide(
+                        color: Colors.red,
+                        width: 2.w,
+                      ),
+                      onChanged: (v) {
+                        cubit.totalController.text =
+                            (int.parse(cubit.priceController.text) +
+                                    int.parse(v!))
+                                .toString();
+                      },
+                      validator: (v) {
+                        if (v!.isEmpty) {
+                          return "برجاء ملئ الخانة";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    CustomTextField(
+                      controller: cubit.totalController,
+                      radius: 8.r,
+                      filled: true,
+                      label: "الاجمالي",
+                      keyboardType: TextInputType.none,
+                      readOnly: true,
+                      fillColor: ColorAssets.textFieldFill,
+                      borderSideOnEnabled: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
+                      borderSideOnFocus: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
+                      borderSideOnFocusedError: BorderSide(
+                        color: ColorAssets.darkPurple,
+                        width: 2.w,
+                      ),
+                      borderSideOnError: BorderSide(
+                        color: Colors.red,
+                        width: 2.w,
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,
                     ),
                     CustomButton(
                       onPressed: () {
-                        ///TODO : Validate
-                        // if (cubit.newOrderFormKey.currentState!.validate()) {
+                        ///TODO : Validate and Store
+                        // if (cubit.merchantMakeOrderFormKey.currentState!.validate()) {
                         cubit.storeNewOrder();
                         showToast(
                           msg: "HI",

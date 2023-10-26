@@ -15,7 +15,7 @@ class CallingRedirectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 376.w,
-      height: 300.h,
+      height: 350.h,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(

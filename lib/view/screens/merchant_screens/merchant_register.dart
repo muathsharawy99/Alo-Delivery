@@ -130,7 +130,25 @@ class MerchantRegisterScreen extends StatelessWidget {
                           height: 20.h,
                         ),
                         CustomTextField(
-
+                          controller: cubit.additionalPhoneController,
+                          keyboardType: TextInputType.phone,
+                          radius: 8.r,
+                          filled: true,
+                          label: "رقم هاتف اضافي",
+                          fillColor: ColorAssets.textFieldFill,
+                          borderSideOnEnabled: BorderSide(
+                            color: ColorAssets.darkPurple,
+                            width: 2.w,
+                          ),
+                          borderSideOnFocus: BorderSide(
+                            color: ColorAssets.darkPurple,
+                            width: 2.w,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        CustomTextField(
                           controller: cubit.nIDController,
                           keyboardType: TextInputType.number,
                           radius: 8.r,
@@ -213,50 +231,49 @@ class MerchantRegisterScreen extends StatelessWidget {
                         SizedBox(
                           height: 20.h,
                         ),
-                        CustomTextField(
-                          controller: cubit.vPasswordController,
-                          keyboardType: TextInputType.visiblePassword,
-                          radius: 8.r,
-                          obscureText: true,
-                          filled: true,
-                          label: "تأكيد الرقم السرى",
-                          fillColor: ColorAssets.textFieldFill,
-                          borderSideOnEnabled: BorderSide(
-                            color: ColorAssets.darkPurple,
-                            width: 2.w,
-                          ),
-                          borderSideOnFocus: BorderSide(
-                            color: ColorAssets.darkPurple,
-                            width: 2.w,
-                          ),
-                          borderSideOnFocusedError: BorderSide(
-                            color: ColorAssets.darkPurple,
-                            width: 2.w,
-                          ),
-                          borderSideOnError: BorderSide(
-                            color: Colors.red,
-                            width: 2.w,
-                          ),
-                          validator: (v) {
-                            if (v!.trim().length < 8) {
-                              return "يجب أن لا يقل الرقم السرى عن 8 أحرف";
-                            }
-                            else if (v != cubit.passwordController.text) {
-                              return "يجب أن يكون الرقم السرى متطابقاً";
-                            }
-                            else {
-                              return null;
-                            }
-                          },
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
+                        // CustomTextField(
+                        //   controller: cubit.vPasswordController,
+                        //   keyboardType: TextInputType.visiblePassword,
+                        //   radius: 8.r,
+                        //   obscureText: true,
+                        //   filled: true,
+                        //   label: "تأكيد الرقم السرى",
+                        //   fillColor: ColorAssets.textFieldFill,
+                        //   borderSideOnEnabled: BorderSide(
+                        //     color: ColorAssets.darkPurple,
+                        //     width: 2.w,
+                        //   ),
+                        //   borderSideOnFocus: BorderSide(
+                        //     color: ColorAssets.darkPurple,
+                        //     width: 2.w,
+                        //   ),
+                        //   borderSideOnFocusedError: BorderSide(
+                        //     color: ColorAssets.darkPurple,
+                        //     width: 2.w,
+                        //   ),
+                        //   borderSideOnError: BorderSide(
+                        //     color: Colors.red,
+                        //     width: 2.w,
+                        //   ),
+                        //   validator: (v) {
+                        //     if (v!.trim().length < 8) {
+                        //       return "يجب أن لا يقل الرقم السرى عن 8 أحرف";
+                        //     }
+                        //     else if (v != cubit.passwordController.text) {
+                        //       return "يجب أن يكون الرقم السرى متطابقاً";
+                        //     }
+                        //     else {
+                        //       return null;
+                        //     }
+                        //   },
+                        // ),
+                        // SizedBox(
+                        //   height: 20.h,
+                        // ),
                         CustomTextField(
                           controller: cubit.addressController,
                           keyboardType: TextInputType.streetAddress,
                           radius: 8.r,
-                          obscureText: true,
                           filled: true,
                           label: "العنوان",
                           fillColor: ColorAssets.textFieldFill,
@@ -283,25 +300,6 @@ class MerchantRegisterScreen extends StatelessWidget {
                               return null;
                             }
                           },
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        CustomTextField(
-                          controller: cubit.additionalPhoneController,
-                          keyboardType: TextInputType.phone,
-                          radius: 8.r,
-                          filled: true,
-                          label: "رقم هاتف اضافي",
-                          fillColor: ColorAssets.textFieldFill,
-                          borderSideOnEnabled: BorderSide(
-                            color: ColorAssets.darkPurple,
-                            width: 2.w,
-                          ),
-                          borderSideOnFocus: BorderSide(
-                            color: ColorAssets.darkPurple,
-                            width: 2.w,
-                          ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.only(

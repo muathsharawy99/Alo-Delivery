@@ -24,6 +24,7 @@ class OnBoardingScreen extends StatelessWidget {
                 10.w,
               ),
               child: CarouselSlider(
+
                 items: [
                   OnBoardBanner(
                     index: cubit.currentIndex,
@@ -48,10 +49,10 @@ class OnBoardingScreen extends StatelessWidget {
                   enableInfiniteScroll: false,
                   reverse: true,
                   enlargeCenterPage: true,
-                  enlargeFactor: .5,
+                  enlargeFactor: 5,
                   height: MediaQuery
                       .sizeOf(context)
-                      .height,
+                      .height+200,
                 ),
               ),
             ),

@@ -62,30 +62,28 @@ class OnBoardBanner extends StatelessWidget {
           ),
         ),
         if (index == 2)
-          Column(
-            children: [
-              SizedBox(
-                height: 30.h,
+          Padding(
+            padding: EdgeInsetsDirectional.only(
+              top: 30.h,
+            ),
+            child: CustomButton(
+              onPressed: () {
+                Navigation.goPushAndReplacement(
+                  context,
+                  WelcomeScreen(),
+                );
+              },
+              width: 331.w,
+              height: 56.h,
+              bGColor: ColorAssets.darkPurple,
+              radius: 8.r,
+              child: CustomText(
+                text: "سجل الآن",
+                fontWeight: FontWeight.bold,
+                fontSize: 15.sp,
+                color: Colors.white,
               ),
-              CustomButton(
-                onPressed: () {
-                  Navigation.goPushAndReplacement(
-                    context,
-                    WelcomeScreen(),
-                  );
-                },
-                width: 331.w,
-                height: 56.h,
-                bGColor: ColorAssets.darkPurple,
-                radius: 8.r,
-                child: CustomText(
-                  text: "سجل الآن",
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.sp,
-                  color: Colors.white,
-                ),
-              ),
-            ],
+            ),
           ),
       ],
     );

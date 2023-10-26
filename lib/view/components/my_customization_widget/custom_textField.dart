@@ -20,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final String? hintText;
+  final String? errorText;
   final String? Function(String? v)? validator;
   final TextInputAction? whatToDoNext;
   final BorderSide? borderSideOnEnabled;
@@ -27,6 +28,7 @@ class CustomTextField extends StatelessWidget {
   final BorderSide? borderSideOnError;
   final BorderSide? borderSideOnFocus;
   final Function()? onTap;
+  final String? Function(String? v)? onChanged;
 
   const CustomTextField({
     Key? key,
@@ -42,6 +44,7 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.whatToDoNext,
     this.onTap,
+    this.errorText,
     required this.controller,
     required this.keyboardType,
     this.textDirection,
@@ -53,7 +56,7 @@ class CustomTextField extends StatelessWidget {
     this.width,
     this.height,
     this.maxLines,
-    this.alignLabelWithHint,
+    this.alignLabelWithHint, this.onChanged,
   }) : super(key: key);
 
   @override
@@ -77,6 +80,7 @@ class CustomTextField extends StatelessWidget {
             validator: validator,
             textInputAction: whatToDoNext,
             maxLines: maxLines ?? 1,
+            onChanged: onChanged,
             onFieldSubmitted: (v) => FocusScope.of(context).nextFocus(),
             decoration: InputDecoration(
               alignLabelWithHint: alignLabelWithHint,
@@ -85,6 +89,7 @@ class CustomTextField extends StatelessWidget {
               label: CustomText(
                 text: label ?? "",
               ),
+              errorText: errorText,
               suffixIcon: suffixIcon,
               prefixIcon: prefixIcon,
               hintText: hintText,

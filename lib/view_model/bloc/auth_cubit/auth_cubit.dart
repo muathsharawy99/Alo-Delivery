@@ -51,36 +51,30 @@ class AuthCubit extends Cubit<AuthState> {
     emit(ShowRegisterPasswordState());
   }
 
-
   void showLoginPassword() {
     isLoginVisible = !isLoginVisible;
     emit(ShowLoginPasswordState());
   }
-
 
   void checkLicences() {
     isChecked = !isChecked;
     emit(CheckLicencesState());
   }
 
-
   void changeIndicatorIndex(int index) {
     currentIndex = index;
     emit(ChangeIndicatorIndexState());
   }
-
 
   void setGenderController(String value) {
     genderController.text = value;
     emit(SetGenderState());
   }
 
-
   void setVehicleController(int value) {
     vehicleController.text = value.toString();
     emit(SetVehicleState());
   }
-
 
   void clearController() {
     nameController.clear();
@@ -93,7 +87,6 @@ class AuthCubit extends Cubit<AuthState> {
     vPasswordController.clear();
     emit(ClearControllerState());
   }
-
 
   getFromGallery(String type) async {
     emit(GetFromGalleryLoadingState());
@@ -119,7 +112,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-
   void clearImages() {
     idImage = null;
     licenceImage = null;
@@ -127,44 +119,43 @@ class AuthCubit extends Cubit<AuthState> {
     emit(ClearImageState());
   }
 
-
+  //DONE
   createClient() {
     emit(CreateClientLoadingState());
     DioHelper.post(
-      endPoint: EndPoints.register,
+      endPoint: EndPoints.clientRegister,
       data: {
         "name": nameController.text,
-        "national_id": nIDController.text,
-        "password": passwordController.text,
-        "password_confirmation": vPasswordController.text,
-        "gender": genderController.text,
         "phone": phoneController.text,
-        "type": "client",
-        "email": emailController.text,
+        "national_id": nIDController.text,
+        "gender": genderController.text,
+        if (emailController.text != "") "email": emailController.text,
+        "password": passwordController.text,
+        "confirm_password": vPasswordController.text,
       },
     ).then(
       (value) {
-        if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Client Register");
-          showToast(
-            msg: value.data['message'],
-            isError: false,
-          );
-          emit(CreateClientSuccessState());
-        }
-        else {
-          print("Fail On .Then In Client Register");
-          emit(CreateClientErrorState());
-          throw 'Error On .Then In Client Register';
-        }
+        debugPrint("Success On .Then In Client Register");
+        showToast(
+          msg: value.data['message'],
+          isError: false,
+        );
+        emit(CreateClientSuccessState());
       },
     ).catchError((error) {
-      print("Error On .CatchError In Client Register");
+      debugPrint("Error On .CatchError In Client Register");
       print(error.toString());
       if (error is DioException && error.response?.statusCode == 422) {
-        final errors = error.response?.data['error'];
+        final errors = error.response?.data['message'];
+        debugPrint("4222222");
         showToast(
-          msg: "${errors['national_id'][0]}&${errors['phone'][0]}",
+          msg: "${errors}",
+          isError: true,
+        );
+        emit(CreateClientErrorState());
+      } else {
+        showToast(
+          msg: "${error.response?.data['error']}",
           isError: true,
         );
         emit(CreateClientErrorState());
@@ -172,99 +163,96 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  ///TODO : Photos
+  //DONE
   createDelivery() async {
     emit(CreateDeliveryLoadingState());
     DioHelper.postWithImage(
-      endPoint: EndPoints.register,
-      data: FormData.fromMap({
-        "name": nameController.text,
-        "national_id": nIDController.text,
-        "password": passwordController.text,
-        "password_confirmation": vPasswordController.text,
-        "gender": "male",
-        "phone": phoneController.text,
-        "type": "delivery",
-        "email": emailController.text,
-        "vehicle_id": int.parse(vehicleController.text),
-        "national_front": await MultipartFile.fromFile(
-          idImage!.path,
-        ),
-        // "license_img": licenceImage?.path,
-        // "image": profileImage?.path,
-      }),
+      endPoint: EndPoints.deliveryRegister,
+      data: FormData.fromMap(
+        {
+          "name": nameController.text,
+          "phone": phoneController.text,
+          if (emailController.text != "") "email": emailController.text,
+          "password": passwordController.text,
+          "card_image": await MultipartFile.fromFile(
+            idImage!.path,
+          ),
+          "license_image": await MultipartFile.fromFile(
+            licenceImage!.path,
+          ),
+          "image": await MultipartFile.fromFile(
+            profileImage!.path,
+          ),
+          "vehicle_id": int.parse(vehicleController.text),
+          "national_id": nIDController.text,
+        },
+      ),
     ).then(
       (value) {
-        if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Delivery Register");
-          showToast(
-            msg: value.data['message'],
-            isError: false,
-          );
-          emit(CreateDeliverySuccessState());
-        } else {
-          print("Fail On .Then In Delivery Register");
-          emit(CreateDeliveryErrorState());
-          throw 'Error On .Then In Delivery Register';
-        }
+        debugPrint("Success On .Then In Delivery Register");
+        showToast(
+          msg: value.data['message'],
+          isError: false,
+        );
+        emit(CreateDeliverySuccessState());
       },
     ).catchError((error) {
-      print("Error On .CatchError In Delivery Register");
+      debugPrint("Error On .CatchError In Delivery Register");
       print(error.toString());
       if (error is DioException && error.response?.statusCode == 422) {
         final data = error.response?.data;
-
-        final message = data['error'];
-        print("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-        print(message);
-
-        // final errors = error.response?.data['error'];
-        // showToast(
-        //   msg: "${errors['national_id'][0]}&${errors['phone'][0]}",
-        //   isError: true,
-        // );
+        final message = data['message'];
+        showToast(
+          msg: message,
+          isError: true,
+        );
+        emit(CreateDeliveryErrorState());
+      } else {
+        showToast(
+          msg: "${error.response?.data['error']}",
+          isError: true,
+        );
         emit(CreateDeliveryErrorState());
       }
     });
   }
 
-
+  //DONE
   createMerchant() {
     emit(CreateMerchantLoadingState());
     DioHelper.post(
-      endPoint: EndPoints.register,
+      endPoint: EndPoints.merchantRegister,
       data: {
+        "company": nameController.text,
+        "phone": phoneController.text,
+        if (additionalPhoneController.text != "")
+          "extra_phone": additionalPhoneController.text,
         "national_id": nIDController.text,
         "password": passwordController.text,
-        "password_confirmation": vPasswordController.text,
-        "phone": phoneController.text,
-        "type": "merchant",
-        "company_name": nameController.text,
-        "extra_phone": additionalPhoneController.text,
         "address": addressController.text,
       },
     ).then(
       (value) {
-        if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Merchant Register");
-          showToast(
-            msg: value.data['message'],
-            isError: false,
-          );
-          emit(CreateMerchantSuccessState());
-        } else {
-          print("Fail On .Then In Merchant Register");
-          emit(CreateMerchantErrorState());
-          throw 'Error On .Then In Merchant Register';
-        }
+        debugPrint("Success On .Then In Merchant Register");
+        showToast(
+          msg: value.data['message'],
+          isError: false,
+        );
+        emit(CreateMerchantSuccessState());
       },
     ).catchError((error) {
-      print("Error On .CatchError In Merchant Register");
+      debugPrint("Error On .CatchError In Merchant Register");
       print(error.toString());
       if (error is DioException && error.response?.statusCode == 422) {
-        final errors = error.response?.data['error'];
+        final message = error.response?.data['message'];
         showToast(
-          msg: "${errors['national_id'][0]}&${errors['phone'][0]}",
+          msg: message,
+          isError: true,
+        );
+        emit(CreateMerchantErrorState());
+      } else {
+        showToast(
+          msg: "${error.response?.data['error']}",
           isError: true,
         );
         emit(CreateMerchantErrorState());
@@ -272,47 +260,45 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-
+  //DONE
   loginClient() {
     emit(LoginClientLoadingState());
     DioHelper.post(
-      endPoint: EndPoints.login,
+      endPoint: EndPoints.clientLogin,
       data: {
-        "national_id": nIDController.text,
+        "phone": phoneController.text,
         "password": passwordController.text,
       },
     ).then(
       (value) async {
-        if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Client Login");
-          if (value.data['message'] == ConstKeys.pending) {
-            emit(LoginClientPendingState());
-          } else if (value.data['message'] == ConstKeys.rejected) {
-            emit(LoginClientRejectedState());
-          } else if (value.data['message'] == ConstKeys.accepted) {
-            showToast(
-              msg: value.data['message'],
-              isError: false,
-            );
-            SecureStorage.setData(
-              SecureKeys.token,
-              value.data['data']['token'],
-            );
-            emit(LoginClientSuccessState());
-          }
-        } else {
-          print("Fail On .Then In Client Login");
-          emit(LoginClientErrorState());
-          throw 'Error On .Then In Client Login';
+        debugPrint("Success On .Then In Client Login");
+        if (value.data['message'] == ConstKeys.pending) {
+          emit(LoginClientPendingState());
+        } else if (value.data['data']['status'] == ConstKeys.accepted) {
+          showToast(
+            msg: value.data['message'],
+            isError: false,
+          );
+          SecureStorage.setData(
+            SecureKeys.token,
+            value.data['data']['token'],
+          );
+          emit(LoginClientSuccessState());
         }
       },
     ).catchError((error) {
-      print("Error On .CatchError In Client Login");
+      debugPrint("Error On .CatchError In Client Login");
       print(error.toString());
       if (error is DioException && error.response?.statusCode == 422) {
         final response = error.response?.data;
         showToast(
-          msg: "${response['message']}",
+          msg: response,
+          isError: true,
+        );
+        emit(LoginClientErrorState());
+      } else {
+        showToast(
+          msg: "${error.response?.data['error']}",
           isError: true,
         );
         emit(LoginClientErrorState());
@@ -320,47 +306,45 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-
+  //DONE
   loginDelivery() {
     emit(LoginDeliveryLoadingState());
     DioHelper.post(
-      endPoint: EndPoints.login,
+      endPoint: EndPoints.deliveryLogin,
       data: {
-        "national_id": nIDController.text,
+        "phone": phoneController.text,
         "password": passwordController.text,
       },
     ).then(
-          (value) async {
-        if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Delivery Login");
-          if (value.data['message'] == ConstKeys.pending) {
-            emit(LoginDeliveryPendingState());
-          } else if (value.data['message'] == ConstKeys.rejected) {
-            emit(LoginDeliveryRejectedState());
-          } else if (value.data['message'] == ConstKeys.accepted) {
-            showToast(
-              msg: value.data['message'],
-              isError: false,
-            );
-            SecureStorage.setData(
-              SecureKeys.token,
-              value.data['data']['token'],
-            );
-            emit(LoginDeliverySuccessState());
-          }
-        } else {
-          print("Fail On .Then In Delivery Login");
-          emit(LoginDeliveryErrorState());
-          throw 'Error On .Then In Delivery Login';
+      (value) async {
+        debugPrint("Success On .Then In Delivery Login");
+        if (value.data['message'] == ConstKeys.pending) {
+          emit(LoginDeliveryPendingState());
+        } else if (value.data['data']['status'] == ConstKeys.accepted) {
+          showToast(
+            msg: value.data['message'],
+            isError: false,
+          );
+          SecureStorage.setData(
+            SecureKeys.token,
+            value.data['data']['token'],
+          );
+          emit(LoginDeliverySuccessState());
         }
       },
     ).catchError((error) {
-      print("Error On .CatchError In Delivery Login");
+      debugPrint("Error On .CatchError In Delivery Login");
       print(error.toString());
       if (error is DioException && error.response?.statusCode == 422) {
         final response = error.response?.data;
         showToast(
-          msg: "${response['message']}",
+          msg: response,
+          isError: true,
+        );
+        emit(LoginDeliveryErrorState());
+      } else {
+        showToast(
+          msg: "${error.response?.data}",
           isError: true,
         );
         emit(LoginDeliveryErrorState());
@@ -368,47 +352,45 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-
+  //DONE
   loginMerchant() {
     emit(LoginMerchantLoadingState());
     DioHelper.post(
-      endPoint: EndPoints.login,
+      endPoint: EndPoints.merchantLogin,
       data: {
-        "national_id": nIDController.text,
+        "phone": phoneController.text,
         "password": passwordController.text,
       },
     ).then(
-          (value) async {
-        if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Merchant Login");
-          if (value.data['message'] == ConstKeys.pending) {
-            emit(LoginMerchantPendingState());
-          } else if (value.data['message'] == ConstKeys.rejected) {
-            emit(LoginMerchantRejectedState());
-          } else if (value.data['message'] == ConstKeys.accepted) {
-            showToast(
-              msg: value.data['message'],
-              isError: false,
-            );
-            SecureStorage.setData(
-              SecureKeys.token,
-              value.data['data']['token'],
-            );
-            emit(LoginMerchantSuccessState());
-          }
-        } else {
-          print("Fail On .Then In Merchant Login");
-          emit(LoginMerchantErrorState());
-          throw 'Error On .Then In Merchant Login';
+      (value) async {
+        debugPrint("Success On .Then In Merchant Login");
+        if (value.data['message'] == ConstKeys.pending) {
+          emit(LoginMerchantPendingState());
+        } else if (value.data['message'] == ConstKeys.accepted) {
+          showToast(
+            msg: value.data['message'],
+            isError: false,
+          );
+          SecureStorage.setData(
+            SecureKeys.token,
+            value.data['data']['token'],
+          );
+          emit(LoginMerchantSuccessState());
         }
       },
     ).catchError((error) {
-      print("Error On .CatchError In Merchant Login");
+      debugPrint("Error On .CatchError In Merchant Login");
       print(error.toString());
       if (error is DioException && error.response?.statusCode == 422) {
         final response = error.response?.data;
         showToast(
-          msg: "${response['message']}",
+          msg: response,
+          isError: true,
+        );
+        emit(LoginMerchantErrorState());
+      } else {
+        showToast(
+          msg: "${error.response?.data['error']}",
           isError: true,
         );
         emit(LoginMerchantErrorState());
@@ -416,32 +398,25 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-
+  //DONE
   getVehicles() {
     emit(GetVehiclesLoadingState());
     DioHelper.get(
       endPoint: EndPoints.getAllVehicles,
     ).then(
       (value) {
-        if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Get All Vehicles");
+          debugPrint("Success On .Then In Get All Vehicles");
           allVehiclesModel = AllVehiclesModel.fromJson(value.data);
           showToast(
             msg: value.data['message'],
             isError: false,
           );
           emit(GetVehiclesSuccessState());
-        } else {
-          print("Fail On .Then In Get All Vehicles");
-          emit(GetVehiclesErrorState());
-          throw 'Error On .Then In Get All Vehicles';
-        }
       },
     ).catchError((error) {
-      print("Error On .CatchError In Get All Vehicles");
+      debugPrint("Error On .CatchError In Get All Vehicles");
       print(error.toString());
       emit(GetVehiclesErrorState());
     });
   }
-
 }

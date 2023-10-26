@@ -4,6 +4,7 @@ import 'package:alo_delivery/view_model/bloc/auth_cubit/auth_cubit.dart';
 import 'package:alo_delivery/view_model/bloc/bloc_observer/bloc_observer.dart';
 import 'package:alo_delivery/view_model/bloc/client_cubit/client_cubit.dart';
 import 'package:alo_delivery/view_model/bloc/delivery_cubit/delivery_cubit.dart';
+import 'package:alo_delivery/view_model/bloc/merchant_cubit/merchant_cubit.dart';
 import 'package:alo_delivery/view_model/local/secure_storage/secure_storage.dart';
 import 'package:alo_delivery/view_model/local/shared_preferences/shared_preferences.dart';
 import 'package:alo_delivery/view_model/network/dio_helper/dio_helper.dart';
@@ -14,10 +15,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Future.wait([
+    SharedPreference.initShared(),
+    DioHelper.init(),
+    SecureStorage.initSecureStorage(),
+  ]);
+  // SharedPreference.initShared();
+  // await SecureStorage.initSecureStorage();
+  // await DioHelper.init();
   Bloc.observer = MyBlocObserver();
-  SharedPreference.initShared();
-  await SecureStorage.initSecureStorage();
-  await DioHelper.init();
   runApp(
     const MyApp(),
   );
@@ -46,6 +52,9 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => DeliveryCubit(),
+            ),
+            BlocProvider(
+              create: (context) => MerchantCubit()..getVehicles(),
             ),
           ],
           child: MaterialApp(

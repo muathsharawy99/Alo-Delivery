@@ -21,12 +21,12 @@ class ClientCubit extends Cubit<ClientState> {
 
   static ClientCubit get(context) => BlocProvider.of<ClientCubit>(context);
 
-  var newOrderFormKey = GlobalKey<FormState>();
+  var clientMakeOrderFormKey = GlobalKey<FormState>();
 
   File? imageFile;
 
   AllVehiclesModel? allVehiclesModel;
-  AllOrdersModel? allOrdersModel;
+  AllOffersModel? allOffersModel;
 
   TextEditingController fromController = TextEditingController();
   TextEditingController toController = TextEditingController();
@@ -59,7 +59,7 @@ class ClientCubit extends Cubit<ClientState> {
     }
   }
 
-  void clearController() {
+  clearController() {
     fromController.clear();
     toController.clear();
     phoneController.clear();
@@ -84,42 +84,37 @@ class ClientCubit extends Cubit<ClientState> {
         "from": fromController.text,
         "to": toController.text,
         "phone": phoneController.text,
-        "vehicle_id": int.parse(vehicleController.text),
-        "type": "client",
+        if (imageFile?.path != null)
+          "image": await MultipartFile.fromFile(
+            imageFile!.path,
+          ),
         "description": descriptionController.text,
-        "image": await MultipartFile.fromFile(
-          imageFile!.path,
-        ),
+        "vehicle_id": int.parse(vehicleController.text),
       }),
     ).then(
       (value) {
-        if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Client Store New Order");
-          showToast(
-            msg: value.data['message'],
-            isError: false,
-          );
-          emit(UserCreateOrderSuccessState());
-        } else {
-          print("Fail On .Then In Client Store New Order");
-          emit(UserCreateOrderErrorState());
-          throw 'Error On .Then In Client Store New Order';
-        }
+        debugPrint("Success On .Then In Client Store New Order");
+        showToast(
+          msg: value.data['message'],
+          isError: false,
+        );
+        emit(UserCreateOrderSuccessState());
       },
     ).catchError((error) {
-      print("Error On .CatchError In Client Store New Order");
+      debugPrint("Error On .CatchError In Client Store New Order");
       print(error.toString());
-      if (error is DioException && error.response?.statusCode == 401) {
-        final data = error.response?.data;
-
-        final message = data['message'];
-        print(message);
-
-        // final errors = error.response?.data['error'];
-        // showToast(
-        //   msg: "${errors['national_id'][0]}&${errors['phone'][0]}",
-        //   isError: true,
-        // );
+      if (error is DioException && error.response?.statusCode == 400) {
+        final message = error.response?.data['message'];
+        showToast(
+          msg: message,
+          isError: true,
+        );
+        emit(UserCreateOrderErrorState());
+      } else {
+        showToast(
+          msg: "fail",
+          isError: true,
+        );
         emit(UserCreateOrderErrorState());
       }
     });
@@ -161,96 +156,90 @@ class ClientCubit extends Cubit<ClientState> {
 //       }
 //
 //       if (offerModel != null) {
-//         print("offer Model :$offerModel");
+//         debugPrint("offer Model :$offerModel");
 //         yield offerModel;
-//         print("hello");
+//         debugPrint("hello");
 //       } else {
-//         print("null");
+//         debugPrint("null");
 //       }
 //     }
 //   }
+//
+//   Stream<OfferModel> getAllOffers() async* {
+//     emit(GetAllOffersLoadingState());
+//     print(await SecureStorage.getData(SecureKeys.token));
+//     final dio = Dio();
+//     try {
+//       final response = await dio.get(
+//         "${EndPoints.baseUrl}${EndPoints.clientGetAllOffers}",
+//         options: Options(responseType: ResponseType.stream, headers: {
+//           "Content-type": "application/json",
+//           "Accept": "application/json",
+//           "Authorization":
+//               "Bearer ${await SecureStorage.getData(SecureKeys.token)}"
+//         }),
+//       );
+//       if (response.statusCode == 200 || response.statusCode == 201) {
+//         final List<dynamic> jsonDataList = response.data;
+//         for (var jsonData in jsonDataList) {
+//           yield OfferModel.fromJson(jsonData);
+//           emit(GetAllOffersSuccessState());
+//         }
+//       } else {
+//         emit(GetAllOffersErrorState());
+//         throw Exception('Failed to load data');
+//       }
+//     } catch (e) {
+//       emit(GetAllOffersErrorState());
+//       throw Exception('Failed to load data: $e');
+//     }
+//   }
 
-  Stream<OfferModel> getAllOffers() async* {
-    emit(GetAllOffersLoadingState());
-    final dio = Dio();
-    try {
-      final response = await dio.get(
-        "${EndPoints.baseUrl}${EndPoints.clientGetAllOffers}",
-        options: Options(responseType: ResponseType.stream, headers: {
-          "Content-type": "application/json",
-          "Accept": "application/json",
-          "Authorization":
-          "Bearer ${await SecureStorage.getData(SecureKeys.token)}"
-        }),
-      );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final List<dynamic> jsonDataList = response.data;
-        for (var jsonData in jsonDataList) {
-          yield OfferModel.fromJson(jsonData);
-          emit(GetAllOffersSuccessState());
-        }
-      } else {
-        emit(GetAllOffersErrorState());
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      emit(GetAllOffersErrorState());
-      throw Exception('Failed to load data: $e');
-    }
-  }
+  clientGetOfferPrice() {}
 
+  //DONE
   getVehicles() {
     emit(GetVehiclesLoadingState());
     DioHelper.get(
       endPoint: EndPoints.getAllVehicles,
     ).then(
       (value) {
-        if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Get All Vehicles");
-          allVehiclesModel = AllVehiclesModel.fromJson(value.data);
-          showToast(
-            msg: value.data['message'],
-            isError: false,
-          );
-          emit(GetVehiclesSuccessState());
-        } else {
-          print("Fail On .Then In Get All Vehicles");
-          emit(GetVehiclesErrorState());
-          throw 'Error On .Then In Get All Vehicles';
-        }
+        debugPrint("Success On .Then In Get All Vehicles");
+        allVehiclesModel = AllVehiclesModel.fromJson(value.data);
+        showToast(
+          msg: value.data['message'],
+          isError: false,
+        );
+        emit(GetVehiclesSuccessState());
       },
     ).catchError((error) {
-      print("Error On .CatchError In Get All Vehicles");
+      debugPrint("Error On .CatchError In Get All Vehicles");
       print(error.toString());
       emit(GetVehiclesErrorState());
     });
   }
 
-  getAllOrders() async {
-    emit(GetAllOrdersLoadingState());
+  clientGetAllOffers() async {
+    emit(GetAllOffersLoadingState());
     DioHelper.get(
-      endPoint: EndPoints.clientGetAllOrders,
+      endPoint: EndPoints.clientGetAllOffers,
       token: await SecureStorage.getData(SecureKeys.token),
     ).then(
       (value) {
-        if (value.data['status'] == 200 || value.data['status'] == 201) {
-          print("Success On .Then In Get All Orders");
-          allOrdersModel = AllOrdersModel.fromJson(value.data);
-          showToast(
-            msg: value.data['message'],
-            isError: false,
-          );
-          emit(GetAllOrdersSuccessState());
-        } else {
-          print("Fail On .Then In Get All Orders");
-          emit(GetAllOrdersErrorState());
-          throw 'Error On .Then In Get All Orders';
-        }
+        debugPrint("Success On .Then In Get All Orders");
+
+        ///TODO : OfferModel
+        allOffersModel = AllOffersModel.fromJson(value.data);
+        showToast(
+          msg: value.data['message'],
+          isError: false,
+        );
+        emit(GetAllOffersSuccessState());
       },
     ).catchError((error) {
-      print("Error On .CatchError In Get All Orders");
+      debugPrint("Error On .CatchError In Get All Orders");
       print(error.toString());
-      emit(GetAllOrdersErrorState());
+      emit(GetAllOffersErrorState());
     });
   }
 }

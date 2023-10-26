@@ -24,10 +24,6 @@ class GetVehiclesSuccessState extends ClientState {}
 class GetVehiclesErrorState extends ClientState {}
 
 
-class GetAllOrdersLoadingState extends ClientState {}
-class GetAllOrdersSuccessState extends ClientState {}
-class GetAllOrdersErrorState extends ClientState {}
-
 
 class GetAllOffersLoadingState extends ClientState {}
 class GetAllOffersSuccessState extends ClientState {}

@@ -20,11 +20,13 @@ void showMyDialog({
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomText(
-              text: text,
-              fontSize: 15.sp,
-              color: Colors.black,
-            ),
+            Wrap(
+              children: [
+                CustomText(
+                  text: text,
+                  fontSize: 15.sp,
+                  color: Colors.black,
+                ),
             SizedBox(
               width: 8.w,
             ),
@@ -34,6 +36,8 @@ void showMyDialog({
             ),
           ],
         ),
+              ],
+            ),
       ),
       barrierDismissible: true,
     );

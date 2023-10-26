@@ -12,23 +12,10 @@ class OfferModel {
     if (json['error'] != null) {
       error = <String>[];
       json['error'].forEach((v) {
-        error!.add(v);
+        error!.add((v));
       });
     }
     status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    data['message'] = message;
-    if (error != null) {
-      data['error'] = error!.map((v) => v).toList();
-    }
-    data['status'] = status;
-    return data;
   }
 }
 
@@ -45,14 +32,6 @@ class Data {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (offers != null) {
-      data['offers'] = offers!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class Offers {
@@ -68,14 +47,6 @@ class Offers {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (priceOffers != null) {
-      data['price_offers'] = priceOffers!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class PriceOffers {
@@ -83,21 +54,22 @@ class PriceOffers {
   int? orderId;
   int? deliveryId;
   String? price;
-  ///TODO : Null
-  Null? message;
+  String? message;
   String? status;
   String? createdAt;
   String? updatedAt;
+  Delivery? delivery;
 
   PriceOffers(
       {this.id,
-        this.orderId,
-        this.deliveryId,
-        this.price,
-        this.message,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
+      this.orderId,
+      this.deliveryId,
+      this.price,
+      this.message,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.delivery});
 
   PriceOffers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -108,18 +80,72 @@ class PriceOffers {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    delivery =
+        json['delivery'] != null ? Delivery.fromJson(json['delivery']) : null;
   }
+}
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['order_id'] = orderId;
-    data['delivery_id'] = deliveryId;
-    data['price'] = price;
-    data['message'] = message;
-    data['status'] = status;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    return data;
+class Delivery {
+  int? id;
+  String? name;
+  String? email;
+  String? nationalId;
+  String? nationalFront;
+  String? licenseImg;
+  String? image;
+  String? gender;
+  int? vehicleId;
+  String? companyName;
+  String? phone;
+  String? extraPhone;
+  String? address;
+  String? emailVerifiedAt;
+  String? type;
+  String? status;
+  String? lastOfferTime;
+  String? createdAt;
+  String? updatedAt;
+
+  Delivery(
+      {this.id,
+      this.name,
+      this.email,
+      this.nationalId,
+      this.nationalFront,
+      this.licenseImg,
+      this.image,
+      this.gender,
+      this.vehicleId,
+      this.companyName,
+      this.phone,
+      this.extraPhone,
+      this.address,
+      this.emailVerifiedAt,
+      this.type,
+      this.status,
+      this.lastOfferTime,
+      this.createdAt,
+      this.updatedAt});
+
+  Delivery.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    nationalId = json['national_id'];
+    nationalFront = json['national_front'];
+    licenseImg = json['license_img'];
+    image = json['image'];
+    gender = json['gender'];
+    vehicleId = json['vehicle_id'];
+    companyName = json['company_name'];
+    phone = json['phone'];
+    extraPhone = json['extra_phone'];
+    address = json['address'];
+    emailVerifiedAt = json['email_verified_at'];
+    type = json['type'];
+    status = json['status'];
+    lastOfferTime = json['last_offer_time'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 }

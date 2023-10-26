@@ -2,8 +2,9 @@ import 'package:alo_delivery/view/components/app_customs/calling_redirection_car
 import 'package:alo_delivery/view/components/app_customs/delivery_card/normal_order_details.dart';
 import 'package:alo_delivery/view/components/my_customization_widget/custom_svg.dart';
 import 'package:alo_delivery/view/components/my_customization_widget/custom_text.dart';
-import 'package:alo_delivery/view/screens/client_make_order.dart';
+import 'package:alo_delivery/view/screens/client_screens/client_make_order.dart';
 import 'package:alo_delivery/view/screens/on_boarding.dart';
+import 'package:alo_delivery/view_model/bloc/delivery_cubit/delivery_cubit.dart';
 import 'package:alo_delivery/view_model/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,8 +15,10 @@ import '../components/app_customs/delivery_card/normal_delivery_card.dart';
 import '../components/app_customs/services_container/services_container.dart';
 import '../components/texts/keys.dart';
 import 'client_follow_order.dart';
-import 'delivery_orders.dart';
+import 'client_order_result.dart';
+import 'delivery_screens/delivery_orders.dart';
 import 'delivery_screens/delivery_report.dart';
+import 'merchant_screens/merchant_make_order.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -29,6 +32,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
+        showTitle: false,
         showProfile: true,
       ),
       body: SafeArea(
@@ -49,7 +53,6 @@ class HomeScreen extends StatelessWidget {
               children: [
                 ServicesContainer(
                   onTap: () {
-
                     if (type == ConstKeys.client) {
                       Navigation.goPush(
                         context,
@@ -62,13 +65,13 @@ class HomeScreen extends StatelessWidget {
                         context,
                         DeliveryReportScreen(),
                       );
-
-                      ///TODO : Merchant LayOut
                     }
+
+                    ///TODO : Merchant LayOut
                     // if (type == ConstKeys.merchant) {
                     //   Navigation.goPush(
                     //     context,
-                    //     ClientMakeOrderScreen(),
+                    //     DeliveryReportScreen(),
                     //   );
                     // }
                   },
@@ -84,11 +87,14 @@ class HomeScreen extends StatelessWidget {
                     if (type == ConstKeys.client) {
                       Navigation.goPush(
                         context,
+
+                        ///TODO : Removeeeeee
                         ClientMakeOrderScreen(),
+                        // ClientOrderResultScreen(),
                       );
                     }
-
                     if (type == ConstKeys.delivery) {
+                      DeliveryCubit.get(context).deliveryGetAllOrders();
                       Navigation.goPush(
                         context,
                         DeliveryOrdersScreen(),
@@ -97,12 +103,12 @@ class HomeScreen extends StatelessWidget {
 
                     ///TODO : Merchant LayOut
 
-                    // if (type == ConstKeys.merchant) {
-                    //   Navigation.goPush(
-                    //     context,
-                    //     ClientMakeOrderScreen(),
-                    //   );
-                    // }
+                    if (type == ConstKeys.merchant) {
+                      Navigation.goPush(
+                        context,
+                        MerchantMakeOrderScreen(),
+                      );
+                    }
                   },
                   label: type == ConstKeys.client || type == ConstKeys.merchant
                       ? "طلب جديد"

@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class SecureStorage {
   static late FlutterSecureStorage storage;
 
-  static initSecureStorage() async {
+  static Future initSecureStorage() async {
     storage = const FlutterSecureStorage();
   }
 

@@ -14,14 +14,14 @@ class ClientFollowOrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: ClientCubit()..getAllOrders(),
-      child: BlocConsumer<ClientCubit, ClientState>(
+    return
+      BlocConsumer<ClientCubit, ClientState>(
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = ClientCubit.get(context);
           return Scaffold(
             appBar: CustomAppBar(
+              showTitle: true,
               showProfile: false,
             ),
             body: SafeArea(
@@ -46,7 +46,7 @@ class ClientFollowOrderScreen extends StatelessWidget {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) => FollowOrderContainer(
-                          orderDescription: cubit.allOrdersModel?.data?[0]
+                          orderDescription: cubit.allOffersModel?.data?[0]
                                   .orders?[index].description ??
                               "description",
                         ),
@@ -54,7 +54,7 @@ class ClientFollowOrderScreen extends StatelessWidget {
                           height: 20.h,
                         ),
                         itemCount:
-                            cubit.allOrdersModel?.data?[0].orders?.length ?? 0,
+                            cubit.allOffersModel?.data?[0].orders?.length ?? 5,
                       ),
                     ),
                   ],
@@ -63,7 +63,6 @@ class ClientFollowOrderScreen extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
+      );
   }
 }

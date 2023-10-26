@@ -46,6 +46,7 @@ class LoginScreen extends StatelessWidget {
           );
         } else if (state is LoginMerchantSuccessState) {
           AuthCubit.get(context).clearController();
+
           Navigation.goPushAndReplacement(
             context,
             HomeScreen(
@@ -58,15 +59,7 @@ class LoginScreen extends StatelessWidget {
           showMyDialog(
             titleString: "عفوا",
             context: context,
-            text: ConstKeys.pending,
-          );
-        } else if (state is LoginClientRejectedState ||
-            state is LoginDeliveryRejectedState ||
-            state is LoginMerchantRejectedState) {
-          showMyDialog(
-            titleString: "عفوا",
-            context: context,
-            text: ConstKeys.rejected,
+            text: ConstKeys.pendingMsg,
           );
         }
       },
@@ -103,11 +96,11 @@ class LoginScreen extends StatelessWidget {
                           height: 400.h,
                         ),
                         CustomTextField(
-                          controller: cubit.nIDController,
+                          controller: cubit.phoneController,
                           keyboardType: TextInputType.number,
                           radius: 8.r,
                           filled: true,
-                          label: "الرقم القومي",
+                          label: "رقم الهاتف",
                           fillColor: ColorAssets.textFieldFill,
                           borderSideOnEnabled: BorderSide(
                             color: ColorAssets.darkPurple,
@@ -123,14 +116,14 @@ class LoginScreen extends StatelessWidget {
                           ),
                           validator: (v) {
                             if (v!.isEmpty) {
-                              return "برجاء ملئ خانة الرقم القومي";
+                              return "برجاء ملئ خانة رقم الهاتف";
                             }
 
                             ///TODO : Validator
 
-                            // else if (v.length < 14) {
-                            //   return "برجاء كتابة الرقم القومي بشكل صحيح";
-                            // }
+                            else if (v.length < 11) {
+                              return "برجاء كتابة رقم الهاتف بشكل صحيح";
+                            }
                             else {
                               return null;
                             }
@@ -189,15 +182,9 @@ class LoginScreen extends StatelessWidget {
                             if (cubit.loginFormKey.currentState!.validate()) {
                               if (type == ConstKeys.client) {
                                 cubit.loginClient();
-                              }
-
-                              ///TODO : Delivery Home Screen
-                              else if (type == ConstKeys.delivery) {
+                              } else if (type == ConstKeys.delivery) {
                                 cubit.loginDelivery();
-                              }
-
-                              ///TODO : Merchant Home Screen
-                              else if (type == ConstKeys.merchant) {
+                              } else if (type == ConstKeys.merchant) {
                                 cubit.loginMerchant();
                               }
                             }

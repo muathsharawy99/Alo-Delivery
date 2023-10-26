@@ -7,7 +7,7 @@ class SharedPreference {
   static SharedPreferences? prefs;
 
 
-  static initShared() async {
+  static Future initShared() async {
     prefs = await SharedPreferences.getInstance();
   }
 

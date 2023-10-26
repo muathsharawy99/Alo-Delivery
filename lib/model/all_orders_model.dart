@@ -1,11 +1,11 @@
-class AllOrdersModel {
+class AllOffersModel {
   List<Data>? data;
   String? message;
   int? status;
 
-  AllOrdersModel({this.data, this.message, this.status});
+  AllOffersModel({this.data, this.message, this.status});
 
-  AllOrdersModel.fromJson(Map<String, dynamic> json) {
+  AllOffersModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {

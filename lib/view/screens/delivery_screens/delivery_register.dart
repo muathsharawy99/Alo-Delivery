@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../view_model/bloc/auth_cubit/auth_cubit.dart';
-import '../../view_model/bloc/auth_cubit/auth_state.dart';
-import '../../view_model/navigation/navigation.dart';
-import '../components/app_customs/app_bar/custom_sliver_appbar.dart';
-import '../components/app_customs/color_assets/color_assets.dart';
-import '../components/app_customs/image_container/image_container.dart';
-import '../components/texts/keys.dart';
-import '../components/texts/licenses.dart';
+import '../../../view_model/bloc/auth_cubit/auth_cubit.dart';
+import '../../../view_model/bloc/auth_cubit/auth_state.dart';
+import '../../../view_model/navigation/navigation.dart';
+import '../../components/app_customs/app_bar/custom_sliver_appbar.dart';
+import '../../components/app_customs/color_assets/color_assets.dart';
+import '../../components/app_customs/image_container/image_container.dart';
+import '../../components/texts/keys.dart';
+import '../../components/texts/licenses.dart';
 
 class DeliveryRegisterScreen extends StatelessWidget {
   const DeliveryRegisterScreen({super.key});
@@ -199,39 +199,39 @@ class DeliveryRegisterScreen extends StatelessWidget {
                       SizedBox(
                         height: 10.h,
                       ),
-                      CustomTextField(
-                        controller: cubit.vPasswordController,
-                        keyboardType: TextInputType.visiblePassword,
-                        radius: 8.r,
-                        obscureText: true,
-                        filled: true,
-                        label: "تأكيد الرقم السرى",
-                        fillColor: ColorAssets.textFieldFill,
-                        borderSideOnEnabled: BorderSide(
-                          color: ColorAssets.darkPurple,
-                          width: 2.w,
-                        ),
-                        borderSideOnFocus: BorderSide(
-                          color: ColorAssets.darkPurple,
-                          width: 2.w,
-                        ),
-                        borderSideOnError: BorderSide(
-                          color: Colors.red,
-                          width: 2.w,
-                        ),
-                        validator: (v) {
-                          if (v!.trim().length < 8) {
-                            return "يجب أن لا يقل الرقم السرى عن 8 أحرف";
-                          } else if (v != cubit.passwordController.text) {
-                            return "يجب أن يكون الرقم السرى متطابقاً";
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
+                      // CustomTextField(
+                      //   controller: cubit.vPasswordController,
+                      //   keyboardType: TextInputType.visiblePassword,
+                      //   radius: 8.r,
+                      //   obscureText: true,
+                      //   filled: true,
+                      //   label: "تأكيد الرقم السرى",
+                      //   fillColor: ColorAssets.textFieldFill,
+                      //   borderSideOnEnabled: BorderSide(
+                      //     color: ColorAssets.darkPurple,
+                      //     width: 2.w,
+                      //   ),
+                      //   borderSideOnFocus: BorderSide(
+                      //     color: ColorAssets.darkPurple,
+                      //     width: 2.w,
+                      //   ),
+                      //   borderSideOnError: BorderSide(
+                      //     color: Colors.red,
+                      //     width: 2.w,
+                      //   ),
+                      //   validator: (v) {
+                      //     if (v!.trim().length < 8) {
+                      //       return "يجب أن لا يقل الرقم السرى عن 8 أحرف";
+                      //     } else if (v != cubit.passwordController.text) {
+                      //       return "يجب أن يكون الرقم السرى متطابقاً";
+                      //     } else {
+                      //       return null;
+                      //     }
+                      //   },
+                      // ),
+                      // SizedBox(
+                      //   height: 10.h,
+                      // ),
                       CustomTextField(
                         controller: cubit.emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -260,7 +260,7 @@ class DeliveryRegisterScreen extends StatelessWidget {
                                 (item) => DropdownMenuItem(
                                   value: item.id,
                                   child: CustomText(
-                                    text: "${item.name}",
+                                    text: "${item.vehicle}",
                                   ),
                                 ),
                               )

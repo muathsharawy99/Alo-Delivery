@@ -2,7 +2,7 @@ import 'package:alo_delivery/view/components/my_customization_widget/custom_butt
 import 'package:alo_delivery/view/components/my_customization_widget/custom_svg.dart';
 import 'package:alo_delivery/view/components/my_customization_widget/custom_text.dart';
 import 'package:alo_delivery/view/screens/client_screens/client_register.dart';
-import 'package:alo_delivery/view/screens/delivery_register.dart';
+import 'package:alo_delivery/view/screens/delivery_screens/delivery_register.dart';
 import 'package:alo_delivery/view_model/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

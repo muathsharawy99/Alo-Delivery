@@ -49,7 +49,6 @@ class CreateMerchantErrorState extends AuthState {}
 class LoginClientLoadingState extends AuthState {}
 class LoginClientSuccessState extends AuthState {}
 class LoginClientPendingState extends AuthState {}
-class LoginClientRejectedState extends AuthState {}
 class LoginClientErrorState extends AuthState {}
 
 
@@ -57,7 +56,6 @@ class LoginClientErrorState extends AuthState {}
 class LoginDeliveryLoadingState extends AuthState {}
 class LoginDeliverySuccessState extends AuthState {}
 class LoginDeliveryPendingState extends AuthState {}
-class LoginDeliveryRejectedState extends AuthState {}
 class LoginDeliveryErrorState extends AuthState {}
 
 
@@ -66,7 +64,6 @@ class LoginDeliveryErrorState extends AuthState {}
 class LoginMerchantLoadingState extends AuthState {}
 class LoginMerchantSuccessState extends AuthState {}
 class LoginMerchantPendingState extends AuthState {}
-class LoginMerchantRejectedState extends AuthState {}
 class LoginMerchantErrorState extends AuthState {}
 
 
