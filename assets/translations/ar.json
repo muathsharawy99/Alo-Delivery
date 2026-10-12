@@ -1,0 +1,120 @@
+{
+  "lang": "ar",
+  "poor_connection_check_the_quality_of_the_internet": "الاتصال ضعيف، تحقق من جودة الإنترنت",
+  "please_check_your_internet_connection": "برجاء التحقق من اتصالك بالإنترنت",
+  "something_went_wrong_please_try_again": "حدث خطأ ما، برجاء المحاولة مرة أخرى",
+  "static": {
+    "refresh": "تحديث",
+    "confirm": "تأكيد",
+    "add_image": "أضف صورة",
+    "image_preview": "معاينة الصورة",
+    "sorry": "عفوا"
+  },
+  "validations": {
+    "empty_field": "برجاء ملئ الخانة",
+    "empty_name": "برجاء ملئ خانة الاسم",
+    "empty_phone": "برجاء ملئ خانة رقم الهاتف",
+    "empty_national_id": "برجاء ملئ خانة الرقم القومى",
+    "empty_company": "برجاء ملئ خانة الشركة",
+    "empty_address": "برجاء ملئ خانة العنوان",
+    "phone_invalid": "برجاء كتابة رقم الهاتف بشكل صحيح",
+    "password_min": "يجب أن لا يقل الرقم السرى عن 8 أحرف",
+    "password_match": "يجب أن يكون الرقم السرى متطابقاً",
+    "choose_gender": "برجاء اختيار النوع",
+    "choose_vehicle": "برجاء اختيار نوع المركبة",
+    "terms_required": "يجب أن تكون موافقا علي شروط المستخدم حتي تتمكن من إنشاء الحساب",
+    "images_required": "يجب رفع جميع الصور",
+    "there_is_no_data": "لا توجد بيانات"
+  },
+  "onboarding": {
+    "first": "من خلال تسجيل الدخول الواحد ، ستكتشف جميع خدماتك المحلية في مكان واحد . وبذلك ، ستتمكن من التركيز على ما يهمك أكثر.",
+    "second": "قم بحجز رحلتك وأطلب طلبك بسهولة وراحة .",
+    "third": "أستكشف عالمًا يلبي جميع أحتياجاتك اليومية على تطبيق واحد !",
+    "register_now": "سجل الآن"
+  },
+  "welcome": {
+    "title": "مرحبا !",
+    "login_as": "الدخول ك",
+    "client": "عميل",
+    "delivery": "دليفرى",
+    "merchant": "تاجر"
+  },
+  "auth": {
+    "login": "تسجيل دخول",
+    "login_button": "دخول",
+    "no_account": "ليس لديك حساب ؟ ",
+    "create_account": "انشاء حساب جديد",
+    "have_account": "هل لديك حساب بالفعل؟ ",
+    "login_now": "سجل دخول الآن",
+    "create": "انشاء",
+    "name": "الاسم",
+    "phone": "رقم الهاتف",
+    "extra_phone": "رقم هاتف اضافي",
+    "national_id": "الرقم القومى",
+    "gender": "النوع",
+    "gender_male": "ذكر",
+    "gender_female": "أنثي",
+    "email": "البريد الالكترونى",
+    "password": "الرقم السرى",
+    "confirm_password": "تأكيد الرقم السرى",
+    "company": "الشركة",
+    "address": "العنوان",
+    "vehicle_type": "نوع المركبة",
+    "agree_to": "أوافق علي ",
+    "terms": "شروط المستخدم",
+    "terms_body": "هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها. ولذلك يتم استخدام طريقة لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ -إلى حد ما- للأحرف عوضاً عن استخدام  فتجعلها تبدو (أي الأحرف) وكأنها نص مقروء. العديد من برامح النشر المكتبي وبرامح تحرير صفحات الويب تستخدم لوريم إيبسوم بشكل إفتراضي كنموذج عن النص.",
+    "add_id_image": "أضف صورة البطاقة",
+    "add_licence_image": "أضف صورة رخصة المركبة",
+    "add_profile_image": "أضف صورتك الشخصية",
+    "pending": "لم يتم تفعيل حسابك بعد"
+  },
+  "home": {
+    "choose_service": "اختر الخدمة",
+    "follow_order": "متابعة طلب",
+    "reports": "التقارير",
+    "new_order": "طلب جديد",
+    "available_orders": "الطلبات المتاحة"
+  },
+  "order": {
+    "new_order": "طلب جديد",
+    "from": "من",
+    "to": "الى",
+    "to_address": "الى عنوان",
+    "phone": "رقم الهاتف",
+    "description": "وصف الطلب",
+    "price": "السعر",
+    "ship_price": "سعر الشحن",
+    "total": "الاجمالي",
+    "details": "تفاصيل الطلب",
+    "result": "نتيجة الطلب",
+    "follow": "متابعة طلب",
+    "from_value": "من : {}",
+    "to_value": "الي : {}",
+    "description_value": "وصف الطلب : {}",
+    "if_searching": "If Searching",
+    "if_cars": "If There Is Cars",
+    "if_no_cars": "If There Isn't Any Car",
+    "step_on_the_way_to_you": "المندوب فى الطريق إليك",
+    "step_received": "تم الاستلام",
+    "step_on_the_way": "فى الطريق",
+    "step_delivered": "تم التسليم"
+  },
+  "offer": {
+    "name": "الاسم : على احمد",
+    "price": "السعر : 400 جنيها",
+    "reject": "رفض",
+    "accept": "قبول"
+  },
+  "contact": {
+    "unavailable": "نعتذر لعدم التوافر في الوقت الحالي",
+    "call_us": "يرجى الاتصال بنا",
+    "call_now": "اتصل الآن",
+    "or_whatsapp": "او التواصل معنا عن طريق الواتساب",
+    "whatsapp": "WhatsApp"
+  },
+  "reports": {
+    "title": "التقارير",
+    "total_shipments": "اجمالى عدد الشحنات",
+    "total_shipping": "اجمالى قيمة الشحن"
+  }
+}

@@ -1,73 +1,88 @@
-import 'package:alo_delivery/view/screens/on_boarding.dart';
-import 'package:alo_delivery/view/screens/splash.dart';
-import 'package:alo_delivery/view_model/bloc/auth_cubit/auth_cubit.dart';
-import 'package:alo_delivery/view_model/bloc/bloc_observer/bloc_observer.dart';
-import 'package:alo_delivery/view_model/bloc/client_cubit/client_cubit.dart';
-import 'package:alo_delivery/view_model/bloc/delivery_cubit/delivery_cubit.dart';
-import 'package:alo_delivery/view_model/bloc/merchant_cubit/merchant_cubit.dart';
-import 'package:alo_delivery/view_model/local/secure_storage/secure_storage.dart';
-import 'package:alo_delivery/view_model/local/shared_preferences/shared_preferences.dart';
-import 'package:alo_delivery/view_model/network/dio_helper/dio_helper.dart';
+import 'dart:ui';
+
+import 'package:easy_localization/easy_localization.dart' as lang;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Future<void> main() async {
+import 'core/extensions/unified_extensions.dart';
+import 'core/services/bloc_observer.dart';
+import 'core/services/service_locator.dart';
+import 'core/services/shared_preference.dart';
+import 'core/utils/theme/light_theme.dart';
+import 'core/utils/unfocus.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Future.wait([
-    SharedPreference.initShared(),
-    DioHelper.init(),
-    SecureStorage.initSecureStorage(),
+  PlatformDispatcher.instance.onError = (error, stack) {
+    debugPrint('Uncaught error: $error');
+    debugPrintStack(stackTrace: stack);
+    return true;
+  };
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
   ]);
-  // SharedPreference.initShared();
-  // await SecureStorage.initSecureStorage();
-  // await DioHelper.init();
-  Bloc.observer = MyBlocObserver();
-  runApp(
-    const MyApp(),
-  );
+
+  await Future.wait([
+    lang.EasyLocalization.ensureInitialized(),
+    ScreenUtil.ensureScreenSize(),
+    CacheHelper.init(),
+  ]);
+
+  Bloc.observer = AppBlocObserver();
+  UserModel.i.get();
+  ServicesLocator().init();
+  runApp(const AloDelivery());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class AloDelivery extends StatelessWidget {
+  const AloDelivery({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(
-        430,
-        932,
-      ),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => AuthCubit()..getVehicles(),
-            ),
-            BlocProvider(
-              create: (context) => ClientCubit()..getVehicles(),
-            ),
-            BlocProvider(
-              create: (context) => DeliveryCubit(),
-            ),
-            BlocProvider(
-              create: (context) => MerchantCubit()..getVehicles(),
-            ),
-          ],
-          child: MaterialApp(
+    return lang.EasyLocalization(
+      path: 'assets/translations',
+      saveLocale: true,
+      startLocale: const Locale('ar'),
+      fallbackLocale: const Locale('ar'),
+      supportedLocales: const [Locale('ar'), Locale('en')],
+      child: ScreenUtilInit(
+        designSize: AppConstants.appSize,
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MaterialApp(
+            title: 'Alo Delivery',
+            themeMode: ThemeMode.light,
+            initialRoute: AppRoutes.init.initial,
+            routes: AppRoutes.init.appRoutes,
+            navigatorKey: navigator,
             debugShowCheckedModeBanner: false,
-            home: AnimatedSplashScreen(
-              splash: SplashScreen(),
-              nextScreen: OnBoardingScreen(),
-              splashTransition: SplashTransition.fadeTransition,
-              splashIconSize: MediaQuery.of(context).size.height,
-            ),
-          ),
-        );
-      },
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            theme: LightTheme.getTheme(),
+            builder: (context, child) {
+              ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+                FlutterError.dumpErrorToConsole(errorDetails);
+                if (kReleaseMode) {
+                  return const SizedBox.shrink();
+                }
+                return ErrorWidget(errorDetails.exception);
+              };
+              return MediaQuery(
+                data: MediaQuery.of(
+                  context,
+                ).copyWith(textScaler: TextScaler.linear(1.sp)),
+                child: Unfocus(child: child ?? const SizedBox.shrink()),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
